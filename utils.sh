@@ -43,4 +43,3 @@ writeln() {
 	write "${1}"
 	echo ""
 }
-
