@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+source "utils.sh"
+
+# Check if params are enough to go ahead.
+branch=$(git symbolic-ref --short -q HEAD)
+to=${1:-develop}
+
+PR_BASE_URL=$(git remote show origin -n | ruby -ne 'puts /^\s*Fetch.*:(.*).git/.match($_)[1] rescue nil')
+
+open "https://www.github.com/${PR_BASE_URL}/compare/${to}...${branch}?expand=1"

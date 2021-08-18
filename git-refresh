@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+source "utils.sh"
+
+# Check if params are enough to go ahead.
+branch=$(git symbolic-ref --short -q HEAD)
+
+git fetch -q
+
+if [[ "${branch}" != "master" ]]; then
+	write "Updating <magenta>master</magenta>... "
+
+	git fetch -q origin master:master
+
+	writeln "<green>done</green>"
+fi
+
+if [[ "${branch}" != "develop" ]]; then
+	write "Updating <magenta>develop</magenta>... "
+
+	git fetch -q origin develop:develop
+
+	writeln "<green>done</green>"
+fi
+
+write "Updating <magenta>${branch}</magenta>... "
+
+git pull --quiet
+
+writeln "<green>done</green>"

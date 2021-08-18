@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+source "utils.sh"
+
+branch=$1
+
+git fetch -p
+
+if [[ $(current_branch) == "${branch}" ]]; then
+	writeln "<red>Error</red> Already checked out branch <yellow>${branch}</yellow>"
+	exit 1
+fi
+
+if [[ "${branch}" == "-" ]]; then
+	previous_branch=$(previous_branch)
+
+	writeln "Switching back to branch <magenta>${previous_branch}</magenta>"
+
+	git checkout --quiet -
+	git pull -p
+
+	exit 0
+fi
+
+# Does the branch already exist? If yes, switch to it
+if git show-ref --quiet "refs/heads/${branch}"; then
+	writeln "Checking out branch <magenta>${branch}</magenta>"
+
+	git checkout --quiet "${branch}"
+	git pull -p
+
+	exit 0
+fi
+
+# Does the branch exist in remote? If yes, switch to it
+if git show-branch "remotes/origin/${branch}" > /dev/null 2>&1; then
+	writeln "Checking out branch <magenta>${branch}</magenta>"
+
+	git checkout --quiet "${branch}"
+	git pull -p
+
+	exit 0
+fi
+
+# The branch doesn't exist so create it if wanted
+write "Branch <yellow>${branch}</yellow> does not exist. Do you want to create it? [y/n] "
+read -r answer
+
+if [[ "${answer}" != "y" ]]; then
+	echo "Aborted."
+
+	exit 0
+fi
+
+writeln "Creating branch <green>${branch}</green>"
+
+git checkout --quiet -b "${branch}"
