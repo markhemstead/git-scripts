@@ -7,7 +7,7 @@ $ git clone https://github.com/markhemstead/git-scripts
 $ cd git-scripts && chmod +x git-*
 ```
 
-And in your .basrc, .zsgrc or .bash_profile file add the new path to $PATH
+And in your .basrc, .zshrc or .bash_profile file add the new path to $PATH
 ```sh
 export PATH="$PATH:/full/path/to/git-scripts"
 ```
