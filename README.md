@@ -4,7 +4,7 @@
 
 ```sh
 $ git clone https://github.com/markhemstead/git-scripts
-$ chmod +x git-*
+$ cd git-scripts && chmod +x git-*
 ```
 
 And in your .basrc, .zsgrc or .bash_profile file add the new path to $PATH
