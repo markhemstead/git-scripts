@@ -55,3 +55,21 @@ Updating master... done
 Updating develop... done
 Updating feature/my-new-feature... done
 ```
+
+### git search
+Searches local and remote branches by partial match. In supported shells, the partial is highlighted
+
+Example:
+```sh
+$ git search feature
+6 matches found
+
+1. feature/branch-1
+2. feature/branch-2
+3. feature/branch-3
+4. feature/branch-4
+5. feature/branch-5
+6. feature/branch-6
+
+Which branch would you like to checkout?
+```

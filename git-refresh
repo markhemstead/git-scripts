@@ -2,6 +2,18 @@
 
 source "utils.sh"
 
+branch=${1}
+
+if [[ "${branch}" != "" ]]; then
+	write "Updating <magenta>${branch}</magenta>... "
+
+	git fetch -q origin "${branch}:${branch}"
+
+	writeln "<green>done</green>"
+
+	exit 0
+fi
+
 # Check if params are enough to go ahead.
 branch=$(git symbolic-ref --short -q HEAD)
 
