@@ -51,12 +51,12 @@ fi
 echo ""
 
 for branch in "${found_branches[@]}"; do
-    xxx=${branch}
+    str=${branch}
     for partial in ${partials[@]}; do
-        xxx="${xxx//${partial}/<yellow>${partial}</yellow>}"
+        str="${str//${partial}/<yellow>${partial}</yellow>}"
     done
 
-    writeln "${i}. ${xxx}"
+    writeln "${i}. ${str}"
 
     ((i = i + 1))
 
