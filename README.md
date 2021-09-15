@@ -14,7 +14,16 @@ export PATH="$PATH:/full/path/to/git-scripts"
 
 ## Usage
 
-### git-cleanup
+### git current
+Returns information about currently checked out branch
+
+Example:
+```sh
+$ git current
+Your current branch is feature/branch-1
+```
+
+### git cleanup
 Deletes all local branches that no longer have an attached remote, i.e. merged branches. Excludes `master`, `develop` and `main` branches
 
 Example:

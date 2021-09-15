@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+source "utils.sh"
+
+branch=$(git branch | grep "*" | cut -c3-)
+
+writeln "Your current branch is <green>${branch}</green>"
