@@ -35,6 +35,12 @@ IFS=$'\n'
 i=1
 arr=()
 
+if [[ "${found_branches_cnt}" == 0 ]]; then
+    writeln "No branches matching criteria found"
+
+    exit 0
+fi
+
 if [[ "${found_branches_cnt}" == 1 ]]; then
     writeln "<green>1</green> match found:"
 else
