@@ -2,19 +2,25 @@
 
 source "utils.sh"
 
-partial=${1}
+partials=("$@")
 
-if [[ "${partial}" == "" ]]; then
-    writeln "No search string provided"
+if [[ ${#partials[@]} == 0 ]]; then
+    writeln "No search parameters provided"
 
     exit 1
 fi
 
-all_branches=$(git branch -a | grep "${partial}" | cut -c3-)
+all_branches=$(git branch -a | grep "${partials[0]}" | cut -c3-)
+for ((i=1; i < ${#partials[@]}; i++)); do
+    all_branches=$(printf "%s\n" "${all_branches[@]}" | grep "${partials[$i]}")
+done
+
+#all_branches=($(printf "%s\n" "${all_branches[@]}"))
+#echo "${all_branches}[@]"
 
 # Remove the "remotes/origin/" prefix if it's there
 found_branches=()
-for branch in ${all_branches}; do
+for branch in ${all_branches[@]}; do
     if [[ "${branch}" == remotes\/origin\/* ]]; then
         found_branches+=("${branch:15}")
     else
@@ -24,6 +30,7 @@ done
 
 # Remote duplicates
 found_branches=($(printf "%s\n" "${found_branches[@]}" | sort -u))
+echo "${found_branches[@]}"
 
 # We need the count in a couple of places, so put it in a var
 found_branches_cnt=${#found_branches[@]}
@@ -41,7 +48,12 @@ fi
 echo ""
 
 for branch in "${found_branches[@]}"; do
-    writeln "${i}. ${branch//${partial}/<yellow>${partial}</yellow>}"
+    xxx=${branch}
+    for partial in ${partials[@]}; do
+        xxx="${xxx//${partial}/<yellow>${partial}</yellow>}"
+    done
+
+    writeln "${i}. ${xxx}"
 
     ((i = i + 1))
 
@@ -51,7 +63,7 @@ done
 write "\nWhich branch would you like to checkout? "
 read -r choice
 
-new_branch=$(echo "${arr[$choice-1]}")
+new_branch="${arr[$choice-1]}"
 
 if [[ "${new_branch}" == "" ]]; then
     writeln "Invalid selection. Choose between 1 and ${found_branches_cnt} only"
