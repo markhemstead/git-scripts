@@ -33,9 +33,6 @@ mapfile -t found_branches < <(printf "%s\n" "${found_branches[@]}" | sort -u)
 # We need the count in a couple of places, so put it in a var
 found_branches_cnt=${#found_branches[@]}
 
-i=1
-arr=()
-
 if [[ "${found_branches_cnt}" == 0 ]]; then
     writeln "No branches matching criteria found"
 
@@ -50,6 +47,8 @@ fi
 
 echo ""
 
+i=1
+arr=()
 for branch in "${found_branches[@]}"; do
     str=${branch}
     for partial in ${partials[@]}; do
