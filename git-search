@@ -27,7 +27,9 @@ for branch in ${all_branches[@]}; do
 done
 
 # Remove duplicates
-found_branches=($(printf "%s\n" "${found_branches[@]}" | sort -u))
+#found_branches=($(printf "%s\n" "${found_branches[@]}" | sort -u))
+mapfile -t found_branches < <(printf "%s\n" "${found_branches[@]}" | sort -u)
+
 # We need the count in a couple of places, so put it in a var
 found_branches_cnt=${#found_branches[@]}
 
