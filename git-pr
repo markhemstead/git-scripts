@@ -6,6 +6,8 @@ source "utils.sh"
 branch=$(git symbolic-ref --short -q HEAD)
 to=${1:-develop}
 
-PR_BASE_URL=$(git remote show origin -n | ruby -ne 'puts /^\s*Fetch.*:(.*).git/.match($_)[1] rescue nil')
+# $line becomes a string like "git@github.com:organisation/repo.git
+# we need to extra the "organisation/repo" part
+PR_BASE_URL=$(git remote show origin -n | grep "Fetch" | awk '{print $3}' | sed 's/\.git$//' | sed 's/.*://')
 
 open "https://www.github.com/${PR_BASE_URL}/compare/${to}...${branch}?expand=1"

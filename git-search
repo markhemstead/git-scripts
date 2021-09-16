@@ -12,14 +12,14 @@ if [[ ${#partials[@]} == 0 ]]; then
 fi
 
 all_branches=$(git branch -a | grep -v "remotes/origin/HEAD" | grep "${partials[0]}" | cut -c3-)
-for ((i=1; i < ${#partials[@]}; i++)); do
+for ((i = 1; i < ${#partials[@]}; i++)); do
     all_branches=$(printf "%s\n" "${all_branches[@]}" | grep "${partials[$i]}")
 done
 
 # Remove the "remotes/origin/" prefix if it's there
 found_branches=()
-for branch in ${all_branches[@]}; do
-    if [[ "${branch}" == remotes\/origin\/* ]]; then
+for branch in ${all_branches}; do
+    if [[ "${branch}" == remotes/origin/* ]]; then
         found_branches+=("${branch:15}")
     else
         found_branches+=("${branch}")
@@ -27,7 +27,6 @@ for branch in ${all_branches[@]}; do
 done
 
 # Remove duplicates
-#found_branches=($(printf "%s\n" "${found_branches[@]}" | sort -u))
 mapfile -t found_branches < <(printf "%s\n" "${found_branches[@]}" | sort -u)
 
 # We need the count in a couple of places, so put it in a var
@@ -51,8 +50,8 @@ i=1
 arr=()
 for branch in "${found_branches[@]}"; do
     str=${branch}
-    for partial in ${partials[@]}; do
-        str="${str//${partial}/<yellow>${partial}</yellow>}"
+    for partial in "${partials[@]}"; do
+        str="${str//${partial}/<magenta>${partial}</magenta>}"
     done
 
     writeln "${i}. ${str}"
@@ -65,7 +64,7 @@ done
 write "\nWhich branch would you like to checkout? "
 read -r choice
 
-new_branch="${arr[$choice-1]}"
+new_branch="${arr[$choice - 1]}"
 
 if [[ "${new_branch}" == "" ]]; then
     writeln "Invalid selection. Choose between 1 and ${found_branches_cnt} only"

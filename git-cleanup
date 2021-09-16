@@ -9,11 +9,11 @@ local_branches=$(git branch | grep -v \* | cut -c3- | grep -Ev "^(develop|master
 
 IFS=$'\n'
 for lb in ${local_branches}; do
-	# Is this branch in remote?
-	exists=$(git branch -r --contains "origin/${lb}" > /dev/null 2>&1 && echo "1" || echo "0")
+    # Is this branch in remote?
+    exists=$(git branch -r --contains "origin/${lb}" >/dev/null 2>&1 && echo "1" || echo "0")
 
-	if [[ "${exists}" == "0" ]]; then
-		writeln "Deleting branch <magenta>${lb}</magenta>"
-		git branch --quiet -D "${lb}"
-	fi
+    if [[ "${exists}" == "0" ]]; then
+        writeln "Deleting branch <magenta>${lb}</magenta>"
+        git branch --quiet -D "${lb}"
+    fi
 done

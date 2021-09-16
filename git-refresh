@@ -5,13 +5,13 @@ source "utils.sh"
 branch=${1}
 
 if [[ "${branch}" != "" ]]; then
-	write "Updating <magenta>${branch}</magenta>... "
+    write "Updating <magenta>${branch}</magenta>... "
 
-	git fetch -q origin "${branch}:${branch}"
+    git fetch -q origin "${branch}:${branch}"
 
-	writeln "<green>done</green>"
+    writeln "<green>done</green>"
 
-	exit 0
+    exit 0
 fi
 
 # Check if params are enough to go ahead.
@@ -20,19 +20,19 @@ branch=$(git symbolic-ref --short -q HEAD)
 git fetch -q
 
 if [[ "${branch}" != "master" ]]; then
-	write "Updating <magenta>master</magenta>... "
+    write "Updating <magenta>master</magenta>... "
 
-	git fetch -q origin master:master
+    git fetch -q origin master:master
 
-	writeln "<green>done</green>"
+    writeln "<green>done</green>"
 fi
 
 if [[ "${branch}" != "develop" ]]; then
-	write "Updating <magenta>develop</magenta>... "
+    write "Updating <magenta>develop</magenta>... "
 
-	git fetch -q origin develop:develop
+    git fetch -q origin develop:develop
 
-	writeln "<green>done</green>"
+    writeln "<green>done</green>"
 fi
 
 write "Updating <magenta>${branch}</magenta>... "
