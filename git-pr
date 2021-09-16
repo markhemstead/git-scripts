@@ -8,6 +8,7 @@ to=${1:-develop}
 
 # $line becomes a string like "git@github.com:organisation/repo.git
 # we need to extra the "organisation/repo" part
-PR_BASE_URL=$(git remote show origin -n | grep "Fetch" | awk '{print $3}' | sed 's/\.git$//' | sed 's/.*://')
+PR_BASE_URL=$(git remote show origin -n | grep "Fetch" | awk '{print $3}')
+PR_BASE_URL=${PR_BASE_URL:15:-4}
 
-open "https://www.github.com/${PR_BASE_URL}/compare/${to}...${branch}?expand=1"
+open "https://www.github.com/${PR_BASE_URL}/compare/${to}...${branch}"
