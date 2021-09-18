@@ -15,15 +15,16 @@ export PATH="$PATH:/full/path/to/git-scripts"
 
 ## Usage
 
-### git current
+### git info
 
 Returns information about currently checked out branch
 
 Example:
 
 ```sh
-$ git current
+$ git info
 Your current branch is feature/branch-1
+Latest commit hash is a15d57512d1e26f4ba0732e8d59d5332110c9ae6
 ```
 
 ### git cleanup

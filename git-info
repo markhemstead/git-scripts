@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+source "utils.sh"
+
+branch=$(current_branch)
+hash=$(git log -1 | head -n 1 | cut -c8-)
+
+writeln "Your current branch is <yellow>${branch}</yellow>"
+writeln "Latest commit hash is <yellow>${hash}</yellow>"
