@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+repo() {
+    repo=$(git remote show origin -n | grep "Fetch" | awk '{print $3}')
+    repo=${repo:15:-4}
+
+    echo "${repo}"
+}
+
 current_branch() {
     git symbolic-ref --short -q HEAD
 }

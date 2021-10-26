@@ -3,8 +3,14 @@
 source "utils.sh"
 
 # Check if params are enough to go ahead.
+repo=$(repo)
 branch=$(git symbolic-ref --short -q HEAD)
 to=${1:-develop}
+
+# If a branch wasn't specified, determine it by looking in .githistory
+if [[ "${1}" == "" && -f "${GIT_INFO_FILE}" ]]; then
+    to=$(grep "^${repo}:${branch}" "${GIT_INFO_FILE}" | cut -d':' -f3)
+fi
 
 # If github cli is installed, use that
 if [[ $(gh_exists) ]]; then
@@ -13,9 +19,4 @@ if [[ $(gh_exists) ]]; then
     exit 0
 fi
 
-# $line becomes a string like "git@github.com:organisation/repo.git
-# we need to extra the "organisation/repo" part
-PR_BASE_URL=$(git remote show origin -n | grep "Fetch" | awk '{print $3}')
-PR_BASE_URL=${PR_BASE_URL:15:-4}
-
-open "https://www.github.com/${PR_BASE_URL}/compare/${to}...${branch}"
+open "https://www.github.com/${repo}/compare/${to}...${branch}"
