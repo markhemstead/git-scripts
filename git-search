@@ -16,6 +16,12 @@ for ((i = 1; i < ${#partials[@]}; i++)); do
     all_branches=$(printf "%s\n" "${all_branches[@]}" | grep "${partials[$i]}")
 done
 
+if [[ "${all_branches}" == "" ]]; then
+    writeln "No branches found matching your parameters"
+
+    exit 0
+fi
+
 # Remove the "remotes/origin/" prefix if it's there
 found_branches=()
 for branch in ${all_branches}; do

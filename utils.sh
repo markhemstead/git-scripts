@@ -43,3 +43,8 @@ writeln() {
     write "${1}"
     echo ""
 }
+
+gh_exists() {
+    gh > /dev/null 2>&1
+    [[ "${?}" != "127" ]] && echo "1" || echo "0"
+}

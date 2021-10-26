@@ -6,6 +6,13 @@ source "utils.sh"
 branch=$(git symbolic-ref --short -q HEAD)
 to=${1:-develop}
 
+# If github cli is installed, use that
+if [[ $(gh_exists) ]]; then
+    gh pr create --web --head "${branch}" --base "${to}" --title "${branch}"
+
+    exit 0
+fi
+
 # $line becomes a string like "git@github.com:organisation/repo.git
 # we need to extra the "organisation/repo" part
 PR_BASE_URL=$(git remote show origin -n | grep "Fetch" | awk '{print $3}')
