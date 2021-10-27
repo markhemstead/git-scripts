@@ -11,6 +11,7 @@ And in your .basrc, .zshrc or .bash_profile file add the new path to $PATH
 
 ```sh
 export PATH="$PATH:/full/path/to/git-scripts"
+export GIT_INFO_FILE="/full/path/to/git-scripts/.githistory"
 ```
 
 ## Usage

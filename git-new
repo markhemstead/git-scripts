@@ -6,8 +6,11 @@ branch=$1
 
 git fetch -p
 
-if [[ $(current_branch) == "${branch}" ]]; then
-    writeln "<red>Error</red> Already checked out branch <yellow>${branch}</yellow>"
+# The branch we're coming off
+cb=$(current_branch)
+
+if [[ "${cb}" == "${branch}" ]]; then
+    writeln "<red>Error</red> Already checked out on branch <yellow>${branch}</yellow>"
     exit 1
 fi
 
@@ -55,3 +58,10 @@ fi
 writeln "Creating branch <green>${branch}</green>"
 
 git checkout --quiet -b "${branch}"
+
+# Write to .githistory
+if [[ "${GIT_INFO_FILE}" != "" ]]; then
+    repo=$(repo)
+#    touch "${GIT_INFO_FILE}"
+    echo "${repo}:${branch}:${cb}" >> "${GIT_INFO_FILE}"
+fi
