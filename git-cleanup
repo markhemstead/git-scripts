@@ -4,6 +4,8 @@ source "utils.sh"
 
 git fetch --quiet -p
 
+repo=$(repo)
+
 # Get the current remote branches excluding the current branch, develop, master and main
 local_branches=$(git branch | grep -v \* | cut -c3- | grep -Ev "^(develop|master|main)$" | sort)
 
@@ -15,5 +17,10 @@ for lb in ${local_branches}; do
     if [[ "${exists}" == "0" ]]; then
         writeln "Deleting branch <magenta>${lb}</magenta>"
         git branch --quiet -D "${lb}"
+
+        # Update the .githistory file if it exists
+        if [[ -f "${GIT_INFO_FILE}" ]]; then
+            sed -ie "/^${repo//\//\\/}:${lb//\//\\/}/d" "${GIT_INFO_FILE}"
+        fi
     fi
 done
