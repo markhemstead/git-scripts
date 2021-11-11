@@ -20,7 +20,7 @@ for lb in ${local_branches}; do
 
         # Update the .githistory file if it exists
         if [[ -f "${GIT_INFO_FILE}" ]]; then
-            sed -ie "/^${repo//\//\\/}:${lb//\//\\/}/d" "${GIT_INFO_FILE}"
+            sed -i "" "/^${repo//\//\\/}:${lb//\//\\/}/d" "${GIT_INFO_FILE}"
         fi
     fi
 done
