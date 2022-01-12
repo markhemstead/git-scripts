@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source "fn.sh"
+
 repo() {
     repo=$(git remote show origin -n | grep "Fetch" | awk '{print $3}')
     repo=${repo:15:-4}

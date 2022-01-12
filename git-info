@@ -2,8 +2,16 @@
 
 source "utils.sh"
 
+json=$(to_boolean "${longOpts[json]:-0}")
+
 branch=$(current_branch)
 hash=$(git log -1 | head -n 1 | cut -c8-)
+
+if [[ "${json}" == 1 ]]; then
+    jo branch=${branch} hash=${hash} | jq
+
+    exit 0
+fi
 
 writeln "Your current branch is <yellow>${branch}</yellow>"
 writeln "Latest commit hash is <yellow>${hash}</yellow>"
