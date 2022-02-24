@@ -7,9 +7,14 @@ branch=${1}
 if [[ "${branch}" != "" ]]; then
     write "Updating <magenta>${branch}</magenta>... "
 
-    git fetch -q origin "${branch}:${branch}"
+    git fetch -q origin "${branch}:${branch}" > /dev/null 2>&1
 
-    writeln "<green>done</green>"
+    s="${?}"
+    if [[ $s != 128 ]]; then
+        writeln "<green>done</green>"
+    else
+        writeln "<red>branch not found</red>"
+    fi
 
     exit 0
 fi
@@ -19,20 +24,43 @@ branch=$(git symbolic-ref --short -q HEAD)
 
 git fetch -q
 
+if [[ "${branch}" != "main" ]]; then
+    write "Updating <magenta>main</magenta>... "
+
+    git fetch -q origin main:main > /dev/null 2>&1
+
+    s="${?}"
+    if [[ $s != 128 ]]; then
+        writeln "<green>done</green>"
+    else
+        writeln "<red>branch not found</red>"
+    fi
+fi
+
 if [[ "${branch}" != "master" ]]; then
     write "Updating <magenta>master</magenta>... "
 
-    git fetch -q origin master:master
+    git fetch -q origin master:master > /dev/null 2>&1
 
-    writeln "<green>done</green>"
+    s="${?}"
+    if [[ $s != 128 ]]; then
+        writeln "<green>done</green>"
+    else
+        writeln "<red>branch not found</red>"
+    fi
 fi
 
 if [[ "${branch}" != "develop" ]]; then
     write "Updating <magenta>develop</magenta>... "
 
-    git fetch -q origin develop:develop
+    git fetch -q origin develop:develop > /dev/null 2>&1
 
-    writeln "<green>done</green>"
+    s="${?}"
+    if [[ $s != 128 ]]; then
+        writeln "<green>done</green>"
+    else
+        writeln "<red>branch not found</red>"
+    fi
 fi
 
 write "Updating <magenta>${branch}</magenta>... "
