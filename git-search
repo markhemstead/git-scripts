@@ -5,15 +5,9 @@ IFS=$'\n'
 
 partials=("$@")
 
-if [[ ${#partials[@]} == 0 ]]; then
-    writeln "No search parameters provided"
-
-    exit 1
-fi
-
-all_branches=$(git branch -a | grep -v "remotes/origin/HEAD" | grep "${partials[0]}" | cut -c3-)
+all_branches=$(git branch -a | grep -v "remotes/origin/HEAD" | grep -i "${partials[0]}" | cut -c3-)
 for ((i = 1; i < ${#partials[@]}; i++)); do
-    all_branches=$(printf "%s\n" "${all_branches[@]}" | grep "${partials[$i]}")
+    all_branches=$(printf "%s\n" "${all_branches[@]}" | grep -i "${partials[$i]}")
 done
 
 if [[ "${all_branches}" == "" ]]; then
@@ -40,15 +34,10 @@ found_branches_cnt=${#found_branches[@]}
 
 if [[ "${found_branches_cnt}" == 0 ]]; then
     writeln "No branches matching criteria found"
-
     exit 0
 fi
 
-if [[ "${found_branches_cnt}" == 1 ]]; then
-    writeln "<green>1</green> match found:"
-else
-    writeln "<green>${found_branches_cnt}</green> matches found:"
-fi
+writeln "<green>${found_branches_cnt}</green> match(es) found:"
 
 echo ""
 
@@ -70,11 +59,23 @@ done
 write "\nWhich branch would you like to checkout? "
 read -r choice
 
+if ! [[ "${choice}" =~ [0-9] ]]; then
+    if [[ "${found_branches_cnt}" == "1" ]]; then
+        writeln "Invalid selection."
+    else
+        writeln "Invalid selection. Choose between 1 and ${found_branches_cnt} only"
+    fi
+    exit 2
+fi
+
 new_branch="${arr[$choice - 1]}"
 
 if [[ "${new_branch}" == "" ]]; then
-    writeln "Invalid selection. Choose between 1 and ${found_branches_cnt} only"
-
+    if [[ "${found_branches_cnt}" == "1" ]]; then
+            writeln "Invalid selection."
+        else
+            writeln "Invalid selection. Choose between 1 and ${found_branches_cnt} only"
+        fi
     exit 2
 fi
 

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+source "utils.sh"
+
+# Get my status
+lines=$(git status -s)
+added_a_file=0
+
+IFS=$'\n'
+for line in $lines; do
+    # The first 2 characters tell us the status
+    s=${line:0:2}
+    file=${line:3}
+    if [[ "${s}" == "??" ]]; then # new file
+        write "\nKeep <red>${file}</red>? "
+    else
+        write "\nKeep <green>${file}</green>? "
+    fi
+
+    read -r choice
+    if [[ "${choice}" == "y" ]]; then
+        git add "${file}"
+        added_a_file=1
+    fi
+done
+
+if [[ $added_a_file == 1 ]]; then
+    write "\nEnter a commit message:"
+    printf "\n\n"
+
+    read -r commit_msg
+
+    git commit -m "${commit_msg}"
+fi

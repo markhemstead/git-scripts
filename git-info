@@ -13,5 +13,16 @@ if [[ "${json}" == 1 ]]; then
     exit 0
 fi
 
+parent_branch=$(cat "${GIT_INFO_FILE}" | grep "${branch}" | awk -F ':' '{print $3}')
+if [[ "${branch}" == "main" ]]; then
+    parent_branch="-"
+elif [[ "${branch}" == "master" ]]; then
+    parent_branch="-"
+    parent_branch="-"
+elif [[ "${branch}" == "develop" ]]; then
+    parent_branch="master/main"
+fi
+
 writeln "Your current branch is <yellow>${branch}</yellow>"
+writeln "Your parent branch is <yellow>${parent_branch:-unknown}</yellow>"
 writeln "Latest commit hash is <yellow>${hash}</yellow>"
